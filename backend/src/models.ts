@@ -1,0 +1,12 @@
+import { Schema, model, Types } from 'mongoose';
+export const userSchema = new Schema({ email:{type:String,required:true,unique:true,lowercase:true,trim:true}, passwordHash:{type:String,required:true}, role:{type:String,enum:['brand','creator'],required:true} },{timestamps:true});
+export const milestoneSchema = new Schema({ threshold:{type:Number,required:true}, payout:{type:Number,required:true} },{_id:false});
+export const campaignSchema = new Schema({ brand:{type:Schema.Types.ObjectId,ref:'User',required:true,index:true}, idempotencyKey:{type:String}, normalizedName:{type:String}, name:{type:String,required:true,trim:true}, platform:{type:String,enum:['Instagram','YouTube'],required:true}, totalBudget:{type:Number,required:true,min:0}, spent:{type:Number,default:0,min:0}, milestones:{type:[milestoneSchema],required:true}, status:{type:String,enum:['active','exhausted'],default:'active'}, },{timestamps:true});
+campaignSchema.index({status:1,platform:1});
+campaignSchema.index({brand:1,idempotencyKey:1},{unique:true,sparse:true});
+campaignSchema.index({brand:1,platform:1,normalizedName:1},{unique:true});
+export const submissionSchema = new Schema({ campaign:{type:Schema.Types.ObjectId,ref:'Campaign',required:true,index:true}, creator:{type:Schema.Types.ObjectId,ref:'User',required:true,index:true}, postUrl:{type:String,required:true}, dedupeVersion:{type:Number}, views:{type:Number,default:0,min:0}, highestMilestone:{type:Number,default:0}, creditedPayout:{type:Number,default:0,min:0}, budgetCapped:{type:Boolean,default:false} },{timestamps:true});
+submissionSchema.index({campaign:1,creator:1});
+submissionSchema.index({campaign:1,creator:1,postUrl:1},{unique:true});
+export const User = model('User',userSchema); export const Campaign = model('Campaign',campaignSchema); export const Submission = model('Submission',submissionSchema);
+export const asId = (id:string) => new Types.ObjectId(id);
