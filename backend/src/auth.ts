@@ -1,5 +1,0 @@
-import { NextFunction, Response } from 'express'; import jwt from 'jsonwebtoken'; import { config } from './config'; import { AuthedRequest, Role } from './types';
-export function signToken(user:{id:string;email:string;role:Role}) { return jwt.sign(user,config.jwtSecret,{expiresIn:'7d'}); }
-export function setAuthCookie(res:Response, token:string) { res.cookie('token',token,{httpOnly:true,sameSite:config.nodeEnv==='production'?'none':'lax',secure:config.nodeEnv==='production',maxAge:7*24*60*60*1000}); }
-export function requireAuth(req:AuthedRequest,res:Response,next:NextFunction) { try { const token=req.cookies?.token; if(!token) return res.status(401).json({message:'Authentication required'}); req.user=jwt.verify(token,config.jwtSecret) as AuthedRequest['user']; next(); } catch { return res.status(401).json({message:'Invalid or expired session'}); } }
-export function requireRole(role:Role) { return (req:AuthedRequest,res:Response,next:NextFunction)=> req.user?.role===role ? next() : res.status(403).json({message:`${role} role required`}); }
