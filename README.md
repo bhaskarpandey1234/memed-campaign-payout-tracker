@@ -65,6 +65,8 @@ npm run build
 
 Deploy the backend to Render (with `MONGODB_URI`, `JWT_SECRET`, and `FRONTEND_URL`) and the frontend to Vercel (with `NEXT_PUBLIC_API_URL`). Add the deployed links here before submission.
 
+For Render, configure the backend service with Root Directory `backend`, Build Command `npm ci --include=dev && npm run build`, and Start Command `npm start`. `NODE_ENV=production` can remain set: `--include=dev` makes TypeScript and its type packages available during the build.
+
 ## Future work
 
 Redis campaign-list caching, velocity-spike detection, Docker packaging, and a scale-out design note are intentionally outside the MVP critical path.
