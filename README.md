@@ -63,7 +63,9 @@ npm run build
 
 ## Deployment
 
-Deploy the backend to Render (with `MONGODB_URI`, `JWT_SECRET`, and `FRONTEND_URL`) and the frontend to Vercel (with `NEXT_PUBLIC_API_URL`). Add the deployed links here before submission.
+Deploy the backend to Render (with `MONGODB_URI`, `JWT_SECRET`, and `FRONTEND_URL`) and the frontend to Vercel (with `BACKEND_API_URL`). Add the deployed links here before submission.
+
+The frontend proxies `/api/*` requests through its own origin to avoid third-party authentication cookies. Set `BACKEND_API_URL` to `http://localhost:4000` locally and `https://memed-payout-api.onrender.com` in Vercel. Keep Render's `FRONTEND_URL` as the exact Vercel origin with no trailing slash.
 
 For Render, configure the backend service with Root Directory `backend`, Build Command `npm ci --include=dev && npm run build`, and Start Command `npm start`. `NODE_ENV=production` can remain set: `--include=dev` makes TypeScript and its type packages available during the build.
 
