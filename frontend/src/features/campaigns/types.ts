@@ -12,4 +12,7 @@ export interface Campaign {
   spent: number;
   remainingBudget: number;
   milestones: Milestone[];
+  status?: 'active' | 'exhausted';
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -8,6 +8,14 @@ Full-stack take-home implementation for the Meme'd creator marketplace assignmen
 - `frontend` — Next.js + TypeScript client
 - `docs/SRS.md` — requirements specification and implementation contract
 
+## Frontend experience
+
+The frontend uses a token-driven Tailwind design system with accessible reusable controls, responsive role workspaces, custom dialogs and dropdowns, inline validation, toast feedback, skeleton loading states, and retryable error states.
+
+- Brand users build milestone ladders with rupee inputs; the browser converts them to paise only when calling the existing API.
+- Creator users can browse live campaigns, submit platform-specific links, and simulate views in a custom dialog instead of a browser prompt.
+- All API behavior, payout rules, credentials, and same-origin `/api/*` proxying remain unchanged.
+
 ## Local setup
 
 ### Backend
@@ -58,12 +66,20 @@ npm test
 npm run build
 
 cd ../frontend
+npm test
 npm run build
 ```
 
 ## Deployment
 
-Deploy the backend to Render (with `MONGODB_URI`, `JWT_SECRET`, and `FRONTEND_URL`) and the frontend to Vercel (with `BACKEND_API_URL`). Add the deployed links here before submission.
+Deploy the backend to Render (with `MONGODB_URI`, `JWT_SECRET`, and `FRONTEND_URL`) and the frontend to Vercel (with `BACKEND_API_URL`).
+
+### Submission checklist
+
+- [ ] Add the verified Vercel frontend URL here after deployment.
+- [ ] Add the verified Render API URL and check its `/health` endpoint.
+- [ ] Set Render's `FRONTEND_URL` to the exact Vercel origin with no trailing slash, then test login and a full brand-to-creator flow on the live site.
+- [ ] Confirm the GitHub repository is public and that neither `.env` nor `.env.local` has been committed.
 
 The frontend proxies `/api/*` requests through its own origin to avoid third-party authentication cookies. Set `BACKEND_API_URL` to `http://localhost:4000` locally and `https://memed-payout-api.onrender.com` in Vercel. Keep Render's `FRONTEND_URL` as the exact Vercel origin with no trailing slash.
 

@@ -5,4 +5,7 @@ export interface Submission {
   views: number;
   creditedPayout: number;
   budgetCapped: boolean;
+  highestMilestone?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
