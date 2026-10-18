@@ -6,7 +6,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, ChevronDown, Eye, EyeOff, LoaderCircle, X } from 'lucide-react';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const buttonStyles = cva(
@@ -85,6 +85,40 @@ export function Field({ label, hint, error, required, children, className }: {
     {children}
     {error && <p id={`${id}-error`} role="alert" className="text-xs font-medium text-danger">{error}</p>}
   </div>;
+}
+
+export function WorkspaceTabs({
+  ariaLabel,
+  items,
+  activeId,
+  onChange,
+}: {
+  ariaLabel: string;
+  items: readonly { id: string; label: string }[];
+  activeId: string;
+  onChange: (id: string) => void;
+}) {
+  const activeTabRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const activeTab = activeTabRef.current;
+    if (!activeTab || typeof activeTab.scrollIntoView !== 'function') return;
+
+    const reducedMotion = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    activeTab.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'nearest' });
+  }, [activeId]);
+
+  return <nav aria-label={ariaLabel} className="workspace-tabs flex max-w-full gap-1 overflow-x-auto rounded-xl border border-line bg-surface p-1">
+    {items.map((item) => <button
+      key={item.id}
+      ref={item.id === activeId ? activeTabRef : undefined}
+      type="button"
+      aria-current={item.id === activeId ? 'page' : undefined}
+      onClick={() => onChange(item.id)}
+      className={`focus-ring whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${item.id === activeId ? 'bg-primary text-white shadow-sm' : 'text-muted hover:bg-canvas hover:text-ink'}`}
+    >{item.label}</button>)}
+  </nav>;
 }
 
 export function Select({ value, onValueChange, options, placeholder = 'Select an option', ariaLabel }: {

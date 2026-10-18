@@ -5,7 +5,7 @@ import { BarChart3, BriefcaseBusiness, CirclePlus, Layers3, Plus, Trash2, Wallet
 import { useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { Badge, Button, Card, EmptyState, ErrorState, Field, InlineAlert, Input, Progress, Select, Skeleton, StatCard } from '@/components/ui';
+import { Badge, Button, Card, EmptyState, ErrorState, Field, InlineAlert, Input, Progress, Select, Skeleton, StatCard, WorkspaceTabs } from '@/components/ui';
 import { formatRupeesIndian, rupeesToPaise } from '@/lib/format/currency';
 import { createCampaign, getMyCampaigns } from '../api/campaigns.api';
 import { campaignFormSchema, type CampaignFormValues } from '../schemas/campaign.schema';
@@ -47,7 +47,7 @@ export function BrandDashboard() {
   }
 
   return <div className="min-w-0 space-y-7"><section className="flex min-w-0 flex-col justify-between gap-4 sm:flex-row sm:items-end"><div className="min-w-0"><p className="text-sm font-bold tracking-wide text-primary">BRAND WORKSPACE</p><h1 className="workspace-heading display-font mt-1 text-4xl font-semibold text-ink sm:text-5xl">Campaigns with a clearer finish line.</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted">Launch view-based collaborations, track spend as milestones are crossed, and keep every payout accountable.</p></div>{refreshing && <p className="shrink-0 text-sm font-medium text-muted">Refreshing campaign data…</p>}</section>
-    <nav aria-label="Brand workspace sections" className="workspace-tabs flex max-w-full gap-1 overflow-x-auto rounded-xl border border-line bg-surface p-1">{views.map((view) => <button key={view.id} onClick={() => setActiveView(view.id)} className={`focus-ring whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${activeView === view.id ? 'bg-primary text-white shadow-sm' : 'text-muted hover:bg-canvas hover:text-ink'}`}>{view.label}</button>)}</nav>
+    <WorkspaceTabs ariaLabel="Brand workspace sections" items={views} activeId={activeView} onChange={(view) => setActiveView(view as BrandView)} />
     {status === 'loading' ? <BrandSkeleton /> : status === 'error' ? <ErrorState message={error} onRetry={() => void load()} /> : <>
       {activeView === 'overview' && <Overview campaigns={campaigns} totals={totals} onCreate={() => setActiveView('create')} onCampaigns={() => setActiveView('campaigns')} />}
       {activeView === 'campaigns' && <CampaignList campaigns={campaigns} onCreate={() => setActiveView('create')} />}

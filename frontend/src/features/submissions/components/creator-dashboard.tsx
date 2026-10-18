@@ -5,7 +5,7 @@ import { ArrowUpRight, Camera, Compass, ExternalLink, FilePlus2, Layers3, Play, 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { Badge, Button, Card, EmptyState, ErrorState, Field, Input, Progress, Skeleton, StatCard } from '@/components/ui';
+import { Badge, Button, Card, EmptyState, ErrorState, Field, Input, Progress, Skeleton, StatCard, WorkspaceTabs } from '@/components/ui';
 import { getLiveCampaigns, type Campaign } from '@/features/campaigns';
 import { getMyEarnings } from '@/features/earnings';
 import { formatRupeesIndian } from '@/lib/format/currency';
@@ -55,7 +55,7 @@ export function CreatorDashboard() {
   }
 
   return <div className="min-w-0 space-y-7"><section className="flex min-w-0 flex-col justify-between gap-4 sm:flex-row sm:items-end"><div className="min-w-0"><p className="text-sm font-bold tracking-wide text-primary">CREATOR WORKSPACE</p><h1 className="workspace-heading display-font mt-1 text-4xl font-semibold text-ink sm:text-5xl">Make the work visible. Keep the payout clear.</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-muted">Explore live opportunities, submit your post, and watch each milestone turn into earnings.</p></div><div className="shrink-0 self-start rounded-xl border border-primary/15 bg-primary-soft px-3 py-2 text-sm font-semibold text-primary sm:self-auto">{formatRupeesIndian(earnings)} earned</div></section>
-    <nav aria-label="Creator workspace sections" className="workspace-tabs flex max-w-full gap-1 overflow-x-auto rounded-xl border border-line bg-surface p-1">{views.map((view) => <button key={view.id} onClick={() => setActiveView(view.id)} className={`focus-ring whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${activeView === view.id ? 'bg-primary text-white shadow-sm' : 'text-muted hover:bg-canvas hover:text-ink'}`}>{view.label}</button>)}</nav>
+    <WorkspaceTabs ariaLabel="Creator workspace sections" items={views} activeId={activeView} onChange={(view) => setActiveView(view as CreatorView)} />
     {status === 'loading' ? <CreatorSkeleton /> : status === 'error' ? <ErrorState message={error} onRetry={() => void load()} /> : <>
       {activeView === 'overview' && <CreatorOverview earnings={earnings} submissions={submissions} campaigns={campaigns} onCampaigns={() => setActiveView('campaigns')} onSubmissions={() => setActiveView('submissions')} />}
       {activeView === 'submissions' && <SubmissionList submissions={submissions} onUpdate={(submission) => { setDialogError(''); setDialogSubmission(submission); }} />}
