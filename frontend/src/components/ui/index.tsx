@@ -40,7 +40,7 @@ export function Spinner({ className }: { className?: string }) {
 }
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
-  return <section className={cn('rounded-2xl border border-line bg-surface p-5 shadow-card sm:p-6', className)}>{children}</section>;
+  return <section className={cn('min-w-0 rounded-2xl border border-line bg-surface p-4 shadow-card sm:p-6', className)}>{children}</section>;
 }
 
 const badgeStyles = cva('inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold tracking-wide', {
@@ -80,7 +80,7 @@ export function Field({ label, hint, error, required, children, className }: {
   label: string; hint?: string; error?: string; required?: boolean; children: ReactNode; className?: string;
 }) {
   const id = label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  return <div className={cn('space-y-1.5', className)}>
+  return <div className={cn('min-w-0 space-y-1.5', className)}>
     <div className="flex items-baseline justify-between gap-3"><label className="text-sm font-semibold text-ink">{label}{required && <span className="ml-1 text-danger">*</span>}</label>{hint && <span className="text-xs text-muted">{hint}</span>}</div>
     {children}
     {error && <p id={`${id}-error`} role="alert" className="text-xs font-medium text-danger">{error}</p>}

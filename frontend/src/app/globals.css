@@ -54,8 +54,8 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 320px; background: var(--canvas); }
-body { margin: 0; min-height: 100vh; background: var(--canvas); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+html { min-width: 320px; max-width: 100%; overflow-x: clip; background: var(--canvas); }
+body { width: 100%; max-width: 100%; min-height: 100vh; margin: 0; overflow-x: clip; background: var(--canvas); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
 button, input { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
@@ -65,6 +65,14 @@ button:disabled { cursor: not-allowed; }
 .focus-ring { outline: none; }
 .focus-ring:focus-visible { box-shadow: 0 0 0 3px rgb(141 112 232 / .26); }
 .app-grid { background-image: linear-gradient(rgb(105 65 198 / .035) 1px, transparent 1px), linear-gradient(90deg, rgb(105 65 198 / .035) 1px, transparent 1px); background-size: 28px 28px; }
+
+/* Keep a swipe on horizontally scrollable controls from moving the whole page. */
+.workspace-tabs { overscroll-behavior-x: contain; scrollbar-width: none; }
+.workspace-tabs::-webkit-scrollbar { display: none; }
+
+@media (max-width: 639px) {
+  .workspace-heading { font-size: 2.25rem; line-height: 1.08; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
